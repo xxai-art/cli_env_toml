@@ -4,74 +4,99 @@
 
 用于从环境变量、命令行参数生成 toml，然后与已有的 toml 文件做配置合并。
 
-用法见 [./src/lib.rs](./src/lib.rs)
+先设置环境变量 [`source ./env`](./env):
+
+```rust
+export TEST_server__host=127.0.0.1
+export TEST_site__title="xxAI.Art - 我们计算艺术"
+export TEST_grpc_port=9999
+export TEST_site__xxai_art__mail=xxai.art@gmail.com
+export TEST_compress=true
+```
+
+用法见 [./src/lib.rs](./src/lib.rs) :
 
 ```rust
 mod env;
 pub use env::{env_with_prefix, kv_toml};
 mod merge;
+
 pub use merge::merge;
 
 #[test]
 fn test() {
-  use toml::Value;
-  let config = "[a]
-b=1
-c=\"x\"
-f=3
+  use std::env::vars;
+
+  let config = "grpc_port=1234
+mysql_port=1235
+
+[site]
+title=\"a b c\"
+password=\"xyz\"
+
+[site.xxai_art]
+hide=true
 ";
-  println!("\n--- toml config ---\n{config}");
-  let env = std::env::vars();
-  let env = std::env::vars();
-  let env = env_with_prefix(env, "TOML_CONF_");
-  println!("--- env with prefix TOML_CONF_ ( set by direnv & ./.env ) ---\n");
-  for (k, v) in &env {
-    println!("{k}={v}");
-  }
+  println!("\n## toml config\n\n```toml\n{config}\n");
+
+  let prefix = "TEST_";
+  let env = env_with_prefix(vars(), prefix);
 
   let toml = kv_toml(env, "__");
-  println!("\n--- convert env into toml ---\n{toml}");
-  let mut config = config.parse().unwrap();
+  println!("## convert env into toml\n\n```toml\n{toml}\n```");
 
+  let mut config = config.parse().unwrap();
   merge(&mut config, &toml.parse().unwrap());
   let config = toml::ser::to_string_pretty(&config).unwrap();
-  println!("--- merge config and env ---\n{config}");
+  println!("## merge config and env\n\n```toml\n{config}\n```");
 }
 ```
 
-输出为
+输出为 :
+
+## toml config
+
+```toml
+grpc_port=1234
+mysql_port=1235
+
+[site]
+title="a b c"
+password="xyz"
+
+[site.xxai_art]
+hide=true
+
+
+## convert env into toml
+
+```toml
+grpc_port=9999
+compress=true
+[site.xxai_art]
+mail="xxai.art@gmail.com"
+[server]
+host="127.0.0.1"
+[site]
+title="xxAI.Art - 我们计算艺术"
 
 ```
---- toml config ---
-[a]
-b=1
-c="x"
-f=3
+## merge config and env
 
---- env with prefix TOML_CONF_ ( set by direnv & ./.env ) ---
+```toml
+compress = true
+grpc_port = 9999
+mysql_port = 1235
 
-a__d="x"
-c=13
-a__b=0
-a__e__f="x"
+[server]
+host = "127.0.0.1"
 
---- convert env into toml ---
-c=13
-[a.e]
-f="x"
-[a]
-d="x"
-b=0
+[site]
+password = "xyz"
+title = "xxAI.Art - 我们计算艺术"
 
---- merge config and env ---
-c = 13
+[site.xxai_art]
+hide = true
+mail = "xxai.art@gmail.com"
 
-[a]
-b = 0
-c = "x"
-d = "x"
-f = 3
-
-[a.e]
-f = "x"
 ```

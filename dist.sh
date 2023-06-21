@@ -10,7 +10,7 @@ fi
 
 cargo test test -- --nocapture --exact | grep -v test | sed -e '/./,$!d' -e :a -e '/^\n*$/{$d;N;ba' -e '}' | tee out.txt
 
-bunx mdi
+bunx mdt .
 
 cargo v patch -y
 git add -u
