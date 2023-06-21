@@ -77,6 +77,6 @@ pub fn cli_env_toml(
   env_prefix: impl AsRef<str>,
   toml_path: Option<impl AsRef<Path>>,
 ) -> anyhow::Result<String> {
-  let config = cli_env_toml_value(cli, env_prefix, toml_path);
-  toml::ser::to_string_pretty(&config)
+  let config = cli_env_toml_value(cli, env_prefix, toml_path)?;
+  Ok(toml::ser::to_string_pretty(&config))
 }
