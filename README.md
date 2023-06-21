@@ -1,6 +1,6 @@
 [‼️]: ✏️README.mdt
 
-# toml_conf
+# cli_env_toml
 
 用于从环境变量、命令行参数生成 toml，然后与已有的 toml 文件做配置合并。
 
@@ -111,7 +111,7 @@ pub fn cli_env_toml<T: DeserializeOwned>(
 }
 ```
 
-输出为 :
+test 输出为 :
 
 ## toml config
 
@@ -130,14 +130,14 @@ hide=true
 ## convert env into toml
 
 ```toml
-compress=true
 grpc_port=9999
+compress=true
 [site]
 title="xxAI.Art - 我们计算艺术"
-[site.xxai_art]
-mail="xxai.art@gmail.com"
 [server]
 host="127.0.0.1"
+[site.xxai_art]
+mail="xxai.art@gmail.com"
 
 ```
 ## merge config and env
