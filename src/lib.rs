@@ -14,6 +14,9 @@ mysql_port=1235
 [site]
 title=\"a b c\"
 password=\"xyz\"
+
+[site.xxai_art]
+hide=true
 ";
   println!("\n## toml config\n\n{config}");
 
