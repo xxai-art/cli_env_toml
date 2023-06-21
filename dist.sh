@@ -8,7 +8,8 @@ if ! [ -x "$(command -v cargo-v)" ]; then
   cargo install cargo-v
 fi
 
-cargo test test -- --nocapture --exact
+cargo test test -- --nocapture --exact | grep -v test | sed -e '/./,$!d' -e :a -e '/^\n*$/{$d;N;ba' -e '}' | tee out.txt
+
 bunx mdi
 
 cargo v patch -y
