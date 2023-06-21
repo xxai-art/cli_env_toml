@@ -33,9 +33,9 @@ hide=true
 }
 
 pub fn config_cli_env_toml(
-  env_prefix: impl AsRef<str>,
-  path: Option<impl AsRef<Path>>,
   cli: Option<Vec<impl AsRef<str>>>,
+  path: Option<impl AsRef<Path>>,
+  env_prefix: impl AsRef<str>,
 ) -> anyhow::Result<String> {
   let toml = if let Some(path) = path {
     std::fs::read_to_string(path)?

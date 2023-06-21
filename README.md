@@ -52,9 +52,9 @@ hide=true
 }
 
 pub fn config_cli_env_toml(
-  env_prefix: impl AsRef<str>,
-  path: Option<impl AsRef<Path>>,
   cli: Option<Vec<impl AsRef<str>>>,
+  path: Option<impl AsRef<Path>>,
+  env_prefix: impl AsRef<str>,
 ) -> anyhow::Result<String> {
   let toml = if let Some(path) = path {
     std::fs::read_to_string(path)?
@@ -112,12 +112,12 @@ hide=true
 ## convert env into toml
 
 ```toml
-compress=true
 grpc_port=9999
-[site]
-title="xxAI.Art - 我们计算艺术"
+compress=true
 [site.xxai_art]
 mail="xxai.art@gmail.com"
+[site]
+title="xxAI.Art - 我们计算艺术"
 [server]
 host="127.0.0.1"
 
