@@ -13,6 +13,16 @@ pub fn env_with_prefix(
     .collect()
 }
 
+pub fn val_or_str(s: impl AsRef<str>) -> String {
+  let s = s.as_ref();
+  if ("x=".to_owned() + s).parse::<toml::Value>().is_ok() {
+    s.to_string()
+  } else {
+    let s = s.replace("\\", "\\\\").replace("\"", "\\\"");
+    format!("\"{s}\"")
+  }
+}
+
 /// 格式文本生成 toml
 pub fn kv_toml(iter: impl IntoIterator<Item = (String, String)>, split: impl AsRef<str>) -> String {
   let split = split.as_ref();
@@ -25,11 +35,11 @@ pub fn kv_toml(iter: impl IntoIterator<Item = (String, String)>, split: impl AsR
     match len {
       1 => {
         root.insert(k, v);
-        // r += &format!("{k}={v}\n")
       }
-      2 => {
+      1.. => {
         let len = len - 1;
         let k = li[len];
+        let v = val_or_str(v);
         let kv = format!("{k}={v}");
         let s = li[..len].join(".");
         let s = format!("[{s}]");
@@ -45,6 +55,7 @@ pub fn kv_toml(iter: impl IntoIterator<Item = (String, String)>, split: impl AsR
   for (k, v) in root {
     r += &k;
     r.push('=');
+    let v = val_or_str(v);
     r += &v;
     r.push('\n');
   }

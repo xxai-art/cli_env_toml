@@ -7,12 +7,10 @@ set -ex
 if ! [ -x "$(command -v cargo-v)" ]; then
   cargo install cargo-v
 fi
-if [ ! -d "node_modules" ]; then
-  bun i
-fi
 
-cargo test | tee out.txt
+cargo test test -- --nocapture --exact
 bunx mdi
+
 cargo v patch -y
 git add -u
 git commit -m. || true
