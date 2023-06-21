@@ -6,6 +6,7 @@ pub use merge::merge;
 #[test]
 fn test() {
   let config = "grpc_port=1234
+mysql_port=1235
 
 [site]
 title=\"a b c\"
@@ -28,8 +29,9 @@ password=\"xyz\"
 
   let toml = kv_toml(env, "__");
   println!("\n--- convert env into toml ---\n{toml}");
+
   let mut config = config.parse().unwrap();
   merge(&mut config, &toml.parse().unwrap());
-  // let config = toml::ser::to_string_pretty(&config).unwrap();
-  // println!("--- merge config and env ---\n{config}");
+  let config = toml::ser::to_string_pretty(&config).unwrap();
+  println!("--- merge config and env ---\n{config}");
 }
