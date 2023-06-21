@@ -52,7 +52,7 @@ hide=true
 }
 
 /// 从 命令行、环境变量、配置文件 读取参数（前面的会覆盖后面的设置）
-pub fn config_cli_env_toml(
+pub fn cli_env_toml_value(
   cli: Option<Vec<impl std::string::ToString>>,
   env_prefix: impl AsRef<str>,
   toml_path: Option<impl AsRef<Path>>,
@@ -90,53 +90,17 @@ pub fn config_cli_env_toml(
   };
   Ok(config)
 }
+
+pub fn cli_env_toml(
+  cli: Option<Vec<impl std::string::ToString>>,
+  env_prefix: impl AsRef<str>,
+  toml_path: Option<impl AsRef<Path>>,
+) -> Result<String> {
+  let config = cli_env_toml_value(cli, env_prefix, toml_path);
+  toml::ser::to_string_pretty(&config)
+}
 ```
 
 输出为 :
 
-## toml config
-
-```toml
-grpc_port=1234
-mysql_port=1235
-
-[site]
-title="a b c"
-password="xyz"
-
-[site.xxai_art]
-hide=true
-    
-
-## convert env into toml
-
-```toml
-grpc_port=9999
-compress=true
-[server]
-host="127.0.0.1"
-[site]
-title="xxAI.Art - 我们计算艺术"
-[site.xxai_art]
-mail="xxai.art@gmail.com"
-
-```
-## merge config and env
-
-```toml
-compress = true
-grpc_port = 9999
-mysql_port = 1235
-
-[server]
-host = "127.0.0.1"
-
-[site]
-password = "xyz"
-title = "xxAI.Art - 我们计算艺术"
-
-[site.xxai_art]
-hide = true
-mail = "xxai.art@gmail.com"
-
-```
+./out.txt

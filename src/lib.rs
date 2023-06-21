@@ -33,7 +33,7 @@ hide=true
 }
 
 /// 从 命令行、环境变量、配置文件 读取参数（前面的会覆盖后面的设置）
-pub fn config_cli_env_toml(
+pub fn cli_env_toml_value(
   cli: Option<Vec<impl std::string::ToString>>,
   env_prefix: impl AsRef<str>,
   toml_path: Option<impl AsRef<Path>>,
@@ -70,4 +70,13 @@ pub fn config_cli_env_toml(
     merge(&mut config, &cli_toml.parse().unwrap());
   };
   Ok(config)
+}
+
+pub fn cli_env_toml(
+  cli: Option<Vec<impl std::string::ToString>>,
+  env_prefix: impl AsRef<str>,
+  toml_path: Option<impl AsRef<Path>>,
+) -> Result<String> {
+  let config = cli_env_toml_value(cli, env_prefix, toml_path);
+  toml::ser::to_string_pretty(&config)
 }
