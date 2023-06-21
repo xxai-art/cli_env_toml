@@ -18,7 +18,7 @@ pub fn val_or_str(s: impl AsRef<str>) -> String {
   if ("x=".to_owned() + s).parse::<toml::Value>().is_ok() {
     s.to_string()
   } else {
-    let s = s.replace("\\", "\\\\").replace("\"", "\\\"");
+    let s = s.replace('\\', "\\\\").replace('\"', "\\\"");
     format!("\"{s}\"")
   }
 }
@@ -36,7 +36,7 @@ pub fn kv_toml(iter: impl IntoIterator<Item = (String, String)>, split: impl AsR
       1 => {
         root.insert(k, v);
       }
-      1.. => {
+      2.. => {
         let len = len - 1;
         let k = li[len];
         let v = val_or_str(v);
