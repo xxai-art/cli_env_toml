@@ -1,6 +1,6 @@
 [package]
 name = "cli_env_toml"
-version = "0.0.2"
+version = "0.0.3"
 edition = "2021"
 license = "Apache-2.0"
 homepage = "https://github.com/xxai-art/cli_env_toml"
