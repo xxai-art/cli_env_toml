@@ -35,10 +35,10 @@ hide=true
 /// 从 命令行、环境变量、配置文件 读取参数（前面的会覆盖后面的设置）
 pub fn config_cli_env_toml(
   cli: Option<Vec<impl AsRef<str>>>,
-  path: Option<impl AsRef<Path>>,
   env_prefix: impl AsRef<str>,
+  toml_path: Option<impl AsRef<Path>>,
 ) -> anyhow::Result<toml::Value> {
-  let toml = if let Some(path) = path {
+  let toml = if let Some(path) = toml_path {
     std::fs::read_to_string(path)?
   } else {
     String::new()
