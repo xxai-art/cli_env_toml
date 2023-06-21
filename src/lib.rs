@@ -32,11 +32,12 @@ hide=true
   println!("## merge config and env\n\n```toml\n{config}\n```");
 }
 
+/// 从 命令行、环境变量、配置文件 读取参数（前面的会覆盖后面的设置）
 pub fn config_cli_env_toml(
   cli: Option<Vec<impl AsRef<str>>>,
   path: Option<impl AsRef<Path>>,
   env_prefix: impl AsRef<str>,
-) -> anyhow::Result<String> {
+) -> anyhow::Result<toml::Value> {
   let toml = if let Some(path) = path {
     std::fs::read_to_string(path)?
   } else {
@@ -67,8 +68,6 @@ pub fn config_cli_env_toml(
       .collect();
     let cli_toml = kv_toml(cli, ".");
     merge(&mut config, &cli_toml.parse().unwrap());
-  }
-
-  let config = toml::ser::to_string_pretty(&config)?;
+  };
   Ok(config)
 }
