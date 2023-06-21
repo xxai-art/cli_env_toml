@@ -39,7 +39,7 @@ password=\"xyz\"
 [site.xxai_art]
 hide=true
     ";
-  println!("\n## toml config\n\n```toml\n{config}\n");
+  println!("\n## toml config\n\n```toml\n{config}\n```");
 
   let env = env_with_prefix(vars(), "TEST_");
 
@@ -126,18 +126,18 @@ password="xyz"
 [site.xxai_art]
 hide=true
     
-
+```
 ## convert env into toml
 
 ```toml
 grpc_port=9999
 compress=true
-[site]
-title="xxAI.Art - 我们计算艺术"
-[server]
-host="127.0.0.1"
 [site.xxai_art]
 mail="xxai.art@gmail.com"
+[server]
+host="127.0.0.1"
+[site]
+title="xxAI.Art - 我们计算艺术"
 
 ```
 ## merge config and env

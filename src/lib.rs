@@ -20,7 +20,7 @@ password=\"xyz\"
 [site.xxai_art]
 hide=true
     ";
-  println!("\n## toml config\n\n```toml\n{config}\n");
+  println!("\n## toml config\n\n```toml\n{config}\n```");
 
   let env = env_with_prefix(vars(), "TEST_");
 
