@@ -5,14 +5,13 @@ pub use merge::merge;
 
 #[test]
 fn test() {
-  use toml::Value;
   let config = "[a]
 b=1
 c=\"x\"
 f=3
 ";
   println!("\n--- toml config ---\n{config}");
-  let env = std::env::vars();
+  let _env = std::env::vars();
   let env = std::env::vars();
   let env = env_with_prefix(env, "TOML_CONF_");
   println!("--- env with prefix TOML_CONF_ ( set by direnv & ./.env ) ---\n");

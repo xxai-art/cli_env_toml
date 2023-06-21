@@ -13,7 +13,7 @@ pub fn merge(merged: &mut Value, value: &Value) {
           match merged.get_mut(k) {
             Some(x) => merge(x, v),
             None => {
-              let _ = merged.insert(k.clone(), v.clone());
+              merged.insert(k, v.clone());
             }
           }
         }

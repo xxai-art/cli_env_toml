@@ -22,21 +22,25 @@ pub fn kv_toml(iter: impl IntoIterator<Item = (String, String)>, split: impl AsR
   for (k, v) in iter {
     let li = k.split(split).collect::<Vec<_>>();
     let len = li.len();
-    if len == 1 {
-      root.insert(k, v);
-      // r += &format!("{k}={v}\n")
-    } else if len > 1 {
-      let len = len - 1;
-      let k = li[len];
-      let kv = format!("{k}={v}");
-      let s = li[..len].join(".");
-      let s = format!("[{s}]");
-      if let Some(mut li) = section.get_mut(&s) {
-        li.push(kv);
-      } else {
-        section.insert(s, vec![kv]);
+    match len {
+      1 => {
+        root.insert(k, v);
+        // r += &format!("{k}={v}\n")
       }
-    }
+      2 => {
+        let len = len - 1;
+        let k = li[len];
+        let kv = format!("{k}={v}");
+        let s = li[..len].join(".");
+        let s = format!("[{s}]");
+        if let Some(li) = section.get_mut(&s) {
+          li.push(kv);
+        } else {
+          section.insert(s, vec![kv]);
+        }
+      }
+      _ => {}
+    };
   }
   for (k, v) in root {
     r += &k;
