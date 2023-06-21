@@ -1,0 +1,14 @@
+[package]
+name = "cli_env_toml"
+version = "0.0.1"
+edition = "2021"
+license = "Apache-2.0"
+homepage = "https://github.com/xxai-art/cli_env_toml"
+repository = "https://github.com/xxai-art/cli_env_toml.git"
+description = "用于从环境变量、命令行参数生成 toml，然后与已有的 toml 文件做配置合并。"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+anyhow = "1.0.71"
+serde = "1.0.164"
+toml = "0.7.4"

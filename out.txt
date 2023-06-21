@@ -1,0 +1,46 @@
+## toml config
+
+```toml
+grpc_port=1234
+mysql_port=1235
+
+[site]
+title="a b c"
+password="xyz"
+
+[site.xxai_art]
+hide=true
+    
+
+## convert env into toml
+
+```toml
+compress=true
+grpc_port=9999
+[site]
+title="xxAI.Art - 我们计算艺术"
+[site.xxai_art]
+mail="xxai.art@gmail.com"
+[server]
+host="127.0.0.1"
+
+```
+## merge config and env
+
+```toml
+compress = true
+grpc_port = 9999
+mysql_port = 1235
+
+[server]
+host = "127.0.0.1"
+
+[site]
+password = "xyz"
+title = "xxAI.Art - 我们计算艺术"
+
+[site.xxai_art]
+hide = true
+mail = "xxai.art@gmail.com"
+
+```
