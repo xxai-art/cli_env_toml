@@ -1,0 +1,46 @@
+# toml_conf
+
+用于从环境变量、命令行参数生成 toml，然后与已有的 toml 文件做配置合并。
+
+用法见 [./src/lib.rs](./src/lib.rs)
+
+```rust
+<+ ./src/lib.rs>
+```
+
+输出为
+
+```
+--- toml config ---
+[a]
+b=1
+c="x"
+f=3
+
+--- env with prefix TOML_CONF_ ( set by direnv & ./.env ) ---
+
+a__d="x"
+c=13
+a__b=0
+a__e__f="x"
+
+--- convert env into toml ---
+c=13
+[a.e]
+f="x"
+[a]
+d="x"
+b=0
+
+--- merge config and env ---
+c = 13
+
+[a]
+b = 0
+c = "x"
+d = "x"
+f = 3
+
+[a.e]
+f = "x"
+```
