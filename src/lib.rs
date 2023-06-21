@@ -5,22 +5,23 @@ pub use merge::merge;
 
 #[test]
 fn test() {
-  let config = "[a]
-b=1
-c=\"x\"
-f=3
+  let config = "grpc_port=1234
+
+[site]
+title=\"a b c\"
+password=\"xyz\"
 ";
   println!("\n--- toml config ---\n{config}");
-  let _env = std::env::vars();
-  let env = std::env::vars();
+
   let prefix = "TEST_";
-  let env = env_with_prefix(env, prefix);
   println!("--- env with prefix {prefix} ( set by direnv & ./.env ) ---\n");
+  let env = std::env::vars();
+  let env = env_with_prefix(env, prefix);
   for (k, v) in &env {
     let v = if v.starts_with('"') {
       format!("'{v}'")
     } else {
-      v
+      v.to_string()
     };
     println!("{prefix}{k}={v}");
   }
@@ -28,8 +29,7 @@ f=3
   let toml = kv_toml(env, "__");
   println!("\n--- convert env into toml ---\n{toml}");
   let mut config = config.parse().unwrap();
-
   merge(&mut config, &toml.parse().unwrap());
-  let config = toml::ser::to_string_pretty(&config).unwrap();
-  println!("--- merge config and env ---\n{config}");
+  // let config = toml::ser::to_string_pretty(&config).unwrap();
+  // println!("--- merge config and env ---\n{config}");
 }
