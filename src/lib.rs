@@ -1,6 +1,6 @@
 mod env;
 pub use env::{env_with_prefix, kv_toml};
-use serde::de::Deserialize;
+use serde::de::DeserializeOwned;
 mod merge;
 use std::path::Path;
 
@@ -35,7 +35,7 @@ hide=true
 
 /// 从 命令行、环境变量、配置文件 读取参数（前面的会覆盖后面的设置）
 pub fn cli_env_toml_value(
-  cli: Option<Vec<impl std::string::ToString>>,
+  cli: Option<Vec<impl AsRef<str>>>,
   env_prefix: impl AsRef<str>,
   toml_path: Option<impl AsRef<Path>>,
 ) -> anyhow::Result<toml::Value> {
@@ -58,7 +58,7 @@ pub fn cli_env_toml_value(
     let cli: Vec<(String, String)> = cli
       .iter()
       .filter_map(|s| {
-        let s = s.to_string();
+        let s = s.as_ref();
         if let Some(index) = s.find('=') {
           let (left, right) = s.split_at(index);
           Some((left.to_string(), right[1..].to_string()))
@@ -74,7 +74,7 @@ pub fn cli_env_toml_value(
 }
 
 pub fn cli_env_toml_str(
-  cli: Option<Vec<impl std::string::ToString>>,
+  cli: Option<Vec<impl AsRef<str>>>,
   env_prefix: impl AsRef<str>,
   toml_path: Option<impl AsRef<Path>>,
 ) -> anyhow::Result<String> {
@@ -82,8 +82,8 @@ pub fn cli_env_toml_str(
   Ok(toml::ser::to_string_pretty(&config)?)
 }
 
-pub fn cli_env_toml<'a, T: Deserialize<'a>>(
-  cli: Option<Vec<impl std::string::ToString>>,
+pub fn cli_env_toml<T: DeserializeOwned>(
+  cli: Option<Vec<impl AsRef<str>>>,
   env_prefix: impl AsRef<str>,
   toml_path: Option<impl AsRef<Path>>,
 ) -> anyhow::Result<T> {
