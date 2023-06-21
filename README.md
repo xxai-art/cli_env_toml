@@ -19,6 +19,7 @@ export TEST_compress=true
 ```rust
 mod env;
 pub use env::{env_with_prefix, kv_toml};
+use serde::de::Deserialize;
 mod merge;
 use std::path::Path;
 
@@ -91,13 +92,22 @@ pub fn cli_env_toml_value(
   Ok(config)
 }
 
-pub fn cli_env_toml(
+pub fn cli_env_toml_str(
   cli: Option<Vec<impl std::string::ToString>>,
   env_prefix: impl AsRef<str>,
   toml_path: Option<impl AsRef<Path>>,
 ) -> anyhow::Result<String> {
   let config = cli_env_toml_value(cli, env_prefix, toml_path)?;
   Ok(toml::ser::to_string_pretty(&config)?)
+}
+
+pub fn cli_env_toml<'a, T: Deserialize<'a>>(
+  cli: Option<Vec<impl std::string::ToString>>,
+  env_prefix: impl AsRef<str>,
+  toml_path: Option<impl AsRef<Path>>,
+) -> anyhow::Result<T> {
+  let config = cli_env_toml_value(cli, env_prefix, toml_path)?;
+  Ok(T::deserialize(config)?)
 }
 ```
 
