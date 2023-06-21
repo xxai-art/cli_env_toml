@@ -15,12 +15,12 @@ hide=true
 ## convert env into toml
 
 ```toml
-compress=true
 grpc_port=9999
-[site]
-title="xxAI.Art - 我们计算艺术"
+compress=true
 [server]
 host="127.0.0.1"
+[site]
+title="xxAI.Art - 我们计算艺术"
 [site.xxai_art]
 mail="xxai.art@gmail.com"
 

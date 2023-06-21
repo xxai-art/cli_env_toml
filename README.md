@@ -53,7 +53,7 @@ hide=true
 
 /// 从 命令行、环境变量、配置文件 读取参数（前面的会覆盖后面的设置）
 pub fn config_cli_env_toml(
-  cli: Option<Vec<impl AsRef<str>>>,
+  cli: Option<Vec<impl std::string::ToString>>,
   env_prefix: impl AsRef<str>,
   toml_path: Option<impl AsRef<Path>>,
 ) -> anyhow::Result<toml::Value> {
@@ -76,7 +76,7 @@ pub fn config_cli_env_toml(
     let cli: Vec<(String, String)> = cli
       .iter()
       .filter_map(|s| {
-        let s = s.as_ref();
+        let s = s.to_string();
         if let Some(index) = s.find('=') {
           let (left, right) = s.split_at(index);
           Some((left.to_string(), right[1..].to_string()))
@@ -111,12 +111,12 @@ hide=true
 ## convert env into toml
 
 ```toml
-compress=true
 grpc_port=9999
-[site]
-title="xxAI.Art - 我们计算艺术"
+compress=true
 [server]
 host="127.0.0.1"
+[site]
+title="xxAI.Art - 我们计算艺术"
 [site.xxai_art]
 mail="xxai.art@gmail.com"
 
