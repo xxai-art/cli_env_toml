@@ -10,13 +10,13 @@ password="xyz"
 
 [site.xxai_art]
 hide=true
-
+    
 
 ## convert env into toml
 
 ```toml
-grpc_port=9999
 compress=true
+grpc_port=9999
 [site]
 title="xxAI.Art - 我们计算艺术"
 [site.xxai_art]
