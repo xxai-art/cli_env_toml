@@ -17,6 +17,11 @@ f=3
   let env = env_with_prefix(env, prefix);
   println!("--- env with prefix {prefix} ( set by direnv & ./.env ) ---\n");
   for (k, v) in &env {
+    let v = if v.starts_with('"') {
+      format!("'{v}'")
+    } else {
+      v
+    };
     println!("{prefix}{k}={v}");
   }
 
