@@ -1,3 +1,5 @@
+use std::env::vars;
+
 mod env;
 pub use env::{env_with_prefix, kv_toml};
 use serde::de::DeserializeOwned;
@@ -8,8 +10,6 @@ pub use merge::merge;
 
 #[test]
 fn test() {
-  use std::env::vars;
-
   let config = "grpc_port=1234
 mysql_port=1235
 
@@ -49,7 +49,7 @@ pub fn cli_env_toml_value(
 
   // 从环境变量读取配置
   {
-    let env_toml = kv_toml(std::env::vars(), env_prefix);
+    let env_toml = kv_toml(env_with_prefix(vars(), env_prefix), "__");
     merge(&mut config, &env_toml.parse().unwrap());
   }
 
