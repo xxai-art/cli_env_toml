@@ -20,14 +20,13 @@ hide=true
 ";
   println!("\n## toml config\n\n```toml\n{config}\n");
 
-  let prefix = "TEST_";
-  let env = env_with_prefix(vars(), prefix);
+  let env = env_with_prefix(vars(), "TEST_");
 
-  let toml = kv_toml(env, "__");
-  println!("## convert env into toml\n\n```toml\n{toml}\n```");
+  let env_toml = kv_toml(env, "__");
+  println!("## convert env into toml\n\n```toml\n{env_toml}\n```");
 
   let mut config = config.parse().unwrap();
-  merge(&mut config, &toml.parse().unwrap());
+  merge(&mut config, &env_toml.parse().unwrap());
   let config = toml::ser::to_string_pretty(&config).unwrap();
   println!("## merge config and env\n\n```toml\n{config}\n```");
 }
